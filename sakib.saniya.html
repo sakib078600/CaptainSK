@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chal Saniya Bata!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #fce4ec; /* Light Pink */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Romantic Hearts Background */
+        .heart {
+            position: absolute;
+            top: -10vh;
+            font-size: 2em;
+            color: #ff69b4; /* Deep Pink */
+            animation: fall linear infinite;
+            z-index: 1; 
+        }
+
+        /* Heart Falling Animation */
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            width: 90%; 
+            max-width: 450px;
+        }
+
+        h1 {
+            color: #e91e63;
+            margin-bottom: 30px;
+        }
+
+        .button-area {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-height: 250px; /* Space for buttons to run around */
+        }
+
+        .option {
+            background-color: #ffcdd2;
+            color: #3f51b5;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.2s ease;
+            width: 80%;
+            position: absolute; /* Needed for moving buttons */
+            z-index: 20;
+            top: 0;
+            left: 10%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* The 'Dushman' button - it must stay static! */
+        #option-3 {
+            position: static; 
+            background-color: #4CAF50; /* A good color to stand out */
+            color: white;
+            margin-top: 190px; /* Place it below the moving buttons' area */
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chal Saniya bata, main tumhara kaun hoon?</h1>
+        
+        <div class="button-area">
+            <button class="option" id="option-1" onclick="handleWrongChoice('Bestfriend')">1. Bestfriend</button>
+            <button class="option" id="option-2" onclick="handleWrongChoice('Sirf Dost')">2. Sirf Dost</button>
+            
+            <button class="option" id="option-3" onclick="handleCorrectChoice()">3. Dushman</button>
+        </div>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const body = document.body;
+        const result = document.getElementById('result');
+        const option1 = document.getElementById('option-1');
+        const option2 = document.getElementById('option-2');
+        const buttonArea = document.querySelector('.button-area');
+        
+        // --- Heart Creation Function ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️'; 
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            heart.style.opacity = Math.random() * 0.8 + 0.2;
+            body.appendChild(heart);
+            setTimeout(() => {
+                heart.remove();
+            }, 5000); 
+        }
+
+        // Keep the hearts coming!
+        setInterval(createHeart, 300);
+
+        // --- Function to Make the Button Run ---
+        function moveButton(button) {
+            const areaWidth = buttonArea.clientWidth - button.offsetWidth;
+            const areaHeight = buttonArea.clientHeight - button.offsetHeight;
+
+            const newX = Math.random() * areaWidth;
+            const newY = Math.random() * areaHeight;
+
+            button.style.transform = `translate(${newX}px, ${newY}px)`;
+        }
+
+        // --- Mouse Hover Events: Make them run! ---
+        // Button moves when the mouse hovers over it
+        option1.addEventListener('mouseover', () => moveButton(option1));
+        option2.addEventListener('mouseover', () => moveButton(option2));
+
+        // --- Click Handlers ---
+        
+        function handleWrongChoice(choice) {
+            const messages = [
+                `Arey yaar! Yeh button bhi nahi chahta ki tum '${choice}' chuno. Sahi jawab bolo! 😡`,
+                `Galat! Galat! Itna jhooth mat bolo! Option 3 select karo, warna screen phat jayegi! 😠`,
+                `Mazaak mat karo! Tumhe pata hai ki tumhara 'Dushman' kaun hai. Try again!`,
+                `Yeh button bhag raha hai kyunki isse tumhari 'dosti' pasand nahi hai! 🤪`,
+            ];
+            
+            // Show a funny pop-up
+            alert(messages[Math.floor(Math.random() * messages.length)]);
+            result.innerHTML = `<span style="color: #e91e63;">Jhooth! Tumhe option 3 hee select karna padega!</span>`;
+        }
+
+        function handleCorrectChoice() {
+            // Correct answer pop-up
+            alert("Sahi Pakde Hain! Mazaa aa gaya! Dosti-wosti sab dhoka hai, 'Dushman' asli hai! 😂");
+            
+            result.innerHTML = `<span style="color: #4CAF50;">🎉 **Jawab Sahi Hai!** 🎉<br>Humari Dushmani zindabad! Enjoy!</span>`;
+            
+            // Bring the running buttons back (optional)
+            option1.style.transform = 'none';
+            option2.style.transform = 'none';
+        }
+    </script>
+
+</body>
+</html>
